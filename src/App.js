@@ -7,10 +7,10 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-          <h1 className="App-title">Random Quote Generator</h1>
-        <p className="App-intro">
+          
+        <h3 className="mt-5">
           Let's get inspired
-        </p>
+        </h3>
         <Quote/>
          
       </div>
