@@ -1,31 +1,29 @@
 import React, {Component} from 'react';
+import $ from 'jquery';
 
 class Quote extends Component{
 
     constructor(props){
         super(props);
         this.state={
-            quote:[],
+            quote:'',
+            author:'',
             imageURL:'https://source.unsplash.com/random/500X300/?nature,water?'+Date.now()
         }
-        this.fetchData=this.fetchData.bind(this);
+        this.randomQuote=this.randomQuote.bind(this);
     }
 
-    fetchData(){
-        fetch('https://talaikis.com/api/quotes/random/')
-        .then((response)=>{
-            return response.json();
-        })
-        .then((response)=>{
-            this.setState({quote:response});
-            this.setState({imageURL:this.state.imageURL+Date.now()})
-        }
+    randomQuote(){
 
-        );
+        $.getJSON("http://api.forismatic.com/api/1.0/?method=getQuote&lang=en&format=jsonp&jsonp=?", function (response) {
+            this.setState({ quote: response.quoteText, author: response.quoteAuthor });
+          }.bind(this));
+        
+          this.setState({imageURL:'https://source.unsplash.com/random/500X300/?nature,water?'+Date.now()});
     }
 
     componentDidMount(){
-        this.fetchData();
+        this.randomQuote();
     }
 
     render(){
@@ -34,10 +32,10 @@ class Quote extends Component{
             <img class="card-img-top" src={this.state.imageURL} />
             <div class="card-body">
               <blockquote class="blockquote mb-0">
-                <p>{this.state.quote.quote}</p>
-                <footer class="blockquote-footer">{this.state.quote.author}</footer>
+                <p>{this.state.quote}</p>
+                <footer class="blockquote-footer">{this.state.author}</footer>
               </blockquote>
-              <button type="button" class="btn btn-raised btn-primary" onClick={this.fetchData}>Get another</button>
+              <button type="button" class="btn btn-raised btn-primary" onClick={this.randomQuote}>Get another</button>
             </div>
           </div>
         );
